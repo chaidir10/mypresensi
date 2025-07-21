@@ -1,9 +1,9 @@
 {
   "name": "MyPresensi by BKK Tarakan",
   "short_name": "MyPresensi",
-  "id": "/absensi/",
-  "scope": "/absensi/",
-  "start_url": "/absensi/?homescreen=1",
+  "id": "/mypresensi/",
+  "scope": "/mypresensi/",
+  "start_url": "/mypresensi/?homescreen=1",
   "display": "standalone",
   
   "dir": "ltr",
@@ -21,19 +21,19 @@
   ],
   "icons": [
     {
-      "src": "/absensi/assets/icons/icon-192x192.png",
+      "src": "/mypresensi/assets/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/absensi/assets/icons/icon-192x192-maskable.png",
+      "src": "/mypresensi/assets/icons/icon-192x192-maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/absensi/assets/icons/icon-512x512.png",
+      "src": "/mypresensi/assets/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
