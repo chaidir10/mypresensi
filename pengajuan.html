@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta content="#5c24c0" name="theme-color" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengajuan - Aplikasi Karyawan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #a78bfa;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --gray-light: #e2e8f0;
+            --gray: #94a3b8;
+            --dark: #1e293b;
+            --white: #ffffff;
+        }
+
+        body {
+            background-color: #f5f3ff;
+            color: var(--dark);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            background-color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-shadow: 0 0 40px rgba(109, 40, 217, 0.08);
+            padding: 0;
+            padding-bottom: 90px;
+        }
+
+        /* Header Section */
+        .header {
+            padding: 25px;
+            background: linear-gradient(160deg, var(--primary-dark), var(--primary));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            padding-bottom: 30px;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+            z-index: -1;
+        }
+
+        .greeting {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--light), #e2e8f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* Submission Card */
+        .submission-card {
+    background-color: var(--white);
+    margin: -20px 20px 15px;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+    position: relative;
+    z-index: 2;
+    border: 1px solid rgba(214, 188, 250, 0.5);
+    animation: fadeIn 0.4s 0.1s ease-out forwards;
+    opacity: 0;
+}
+
+.submission-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: var(--light);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    border: 1px solid var(--gray-light);
+    cursor: pointer;
+    animation: fadeIn 0.3s ease-out forwards;
+    opacity: 0;
+}
+
+.submission-item:nth-child(1) { animation-delay: 0.15s; }
+.submission-item:nth-child(2) { animation-delay: 0.2s; }
+.submission-item:nth-child(3) { animation-delay: 0.25s; }
+
+.submission-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.1);
+}
+
+.submission-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: white;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.submission-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.submission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -10px;
+}
+
+.submission-title {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+}
+
+.badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Status Colors */
+.status-pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--accent);
+}
+
+.status-approved {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+}
+
+.status-rejected {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+        /* New Submission Button */
+        .new-submission-btn {
+            display: block;
+            width: calc(100% - 40px);
+            margin: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+        }
+
+        .new-submission-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(109, 40, 217, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 20px;
+            border-bottom: none;
+        }
+
+        .modal-icon-circle {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .form-section {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--white);
+            padding: 12px 0;
+            box-shadow: 0 -6px 20px rgba(109, 40, 217, 0.08);
+            z-index: 10;
+            border-top: 1px solid var(--gray-light);
+            animation: fadeIn 0.4s 0.15s ease-out forwards;
+            opacity: 0;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--gray);
+            font-size: 9px;
+            width: 20%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 0;
+            border-radius: 10px;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .nav-item::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            background: #f5f3ff;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active::before {
+            opacity: 1;
+            top: -5px;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.15);
+            color: var(--primary);
+        }
+
+        /* Form Improvements */
+        .form-label {
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 10px 15px;
+            border: 1px solid var(--gray-light);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 0.25rem rgba(109, 40, 217, 0.15);
+        }
+
+        /* Button Improvements */
+        .btn {
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        /* Text Improvements */
+        .section-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .submission-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<!-- body -->
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header d-flex justify-content-between align-items-center">
+            <div class="header-content">
+                <div class="greeting">Pengajuan Dokumen</div>
+                <h4 class="user-name">Status Pengajuan & Buat Baru</h4>
+            </div>
+            <div class="user-avatar mb-2">
+                <img alt="User Avatar" class="img-fluid" src="https://avatar.iran.liara.run/public/48">
+            </div>
+        </div>
+
+        <!-- Submission List -->
+        <div class="submission-card">
+    <h5 class="section-title mb-3">Pengajuan Terakhir</h5>
+    
+    <!-- Submission Items -->
+    <div class="submission-item">
+        <div class="submission-icon" style="background-color: #8b5cf6;">
+            <i class="fas fa-plane"></i>
+        </div>
+        <div class="submission-content">
+            <div class="submission-header">
+                <span class="submission-title">Izin Cuti Tahunan</span>
+                <span class="badge status-approved">Disetujui</span>
+            </div>
+            <small class="text-muted">12 Jun 2023</small>
+        </div>
+    </div>
+    
+    <div class="submission-item">
+        <div class="submission-icon" style="background-color: #f59e0b;">
+            <i class="fas fa-money-bill-wave"></i>
+        </div>
+        <div class="submission-content">
+            <div class="submission-header">
+                <span class="submission-title">Reimbursement Transport</span>
+                <span class="badge status-pending">Menunggu</span>
+            </div>
+            <small class="text-muted">5 Jun 2023</small>
+        </div>
+    </div>
+    
+    <div class="submission-item">
+        <div class="submission-icon" style="background-color: #ec4899;">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="submission-content">
+            <div class="submission-header">
+                <span class="submission-title">Lembur Proyek X</span>
+                <span class="badge status-rejected">Ditolak</span>
+            </div>
+            <small class="text-muted">28 Mei 2023</small>
+        </div>
+    </div>
+</div>
+
+        <!-- New Submission Button -->
+        <button class="new-submission-btn" data-bs-toggle="modal" data-bs-target="#newSubmissionModal">
+            <i class="fas fa-plus-circle me-2"></i>Buat Pengajuan Baru
+        </button>
+
+        <!-- New Submission Modal -->
+        <div class="modal fade" id="newSubmissionModal" tabindex="-1" aria-labelledby="newSubmissionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="d-flex align-items-center">
+                            <div class="modal-icon-circle">
+                                <i class="fas fa-file-upload"></i>
+                            </div>
+                            <div>
+                                <h5 class="modal-title mb-0" id="newSubmissionModalLabel">Buat Pengajuan Baru</h5>
+                                <small class="text-white-50">Pilih jenis pengajuan</small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="submissionForm">
+                            <!-- Jenis Pengajuan -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-flex align-items-center">
+                                    <i class="fas fa-list-check me-2"></i>Jenis Pengajuan
+                                </label>
+                                <select class="form-select" id="submissionType" required>
+                                    <option value="" selected disabled>Pilih jenis pengajuan</option>
+                                    <option value="cuti">Izin Cuti</option>
+                                    <option value="reimbursement">Reimbursement</option>
+                                    <option value="lembur">Lembur</option>
+                                    <option value="izin">Izin Tidak Masuk</option>
+                                    <option value="perdin">Perjalanan Dinas</option>
+                                </select>
+                            </div>
+
+                            <!-- Form Section - Cuti -->
+                            <div class="form-section" id="cuti-form">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="far fa-calendar me-2"></i>Tanggal Cuti
+                                    </label>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <input type="date" class="form-control" id="cutiStartDate" required>
+                                            <small class="text-muted">Mulai</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="date" class="form-control" id="cutiEndDate" required>
+                                            <small class="text-muted">Selesai</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-calendar-week me-2"></i>Jumlah Hari
+                                    </label>
+                                    <input type="number" class="form-control" id="cutiDays" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-clipboard-list me-2"></i>Jenis Cuti
+                                    </label>
+                                    <select class="form-select" id="cutiType" required>
+                                        <option value="" disabled selected>Pilih jenis cuti</option>
+                                        <option value="tahunan">Cuti Tahunan</option>
+                                        <option value="sakit">Cuti Sakit</option>
+                                        <option value="melahirkan">Cuti Melahirkan</option>
+                                        <option value="penting">Cuti Penting</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Form Section - Reimbursement -->
+                            <div class="form-section" id="reimbursement-form">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-money-bill-wave me-2"></i>Nominal
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="number" class="form-control" id="reimbursementAmount" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-receipt me-2"></i>Jenis Pengeluaran
+                                    </label>
+                                    <select class="form-select" id="reimbursementType" required>
+                                        <option value="" disabled selected>Pilih jenis pengeluaran</option>
+                                        <option value="transport">Transportasi</option>
+                                        <option value="konsumsi">Konsumsi</option>
+                                        <option value="akomodasi">Akomodasi</option>
+                                        <option value="lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="far fa-calendar me-2"></i>Tanggal Pengeluaran
+                                    </label>
+                                    <input type="date" class="form-control" id="reimbursementDate" required>
+                                </div>
+                            </div>
+
+                            <!-- Form Section - Lembur -->
+                            <div class="form-section" id="lembur-form">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="far fa-calendar me-2"></i>Tanggal Lembur
+                                    </label>
+                                    <input type="date" class="form-control" id="lemburDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-clock me-2"></i>Waktu Lembur
+                                    </label>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <input type="time" class="form-control" id="lemburStart" required>
+                                            <small class="text-muted">Mulai</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="time" class="form-control" id="lemburEnd" required>
+                                            <small class="text-muted">Selesai</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-clipboard-list me-2"></i>Tugas/Proyek
+                                    </label>
+                                    <input type="text" class="form-control" id="lemburProject" required>
+                                </div>
+                            </div>
+
+                            <!-- Form Section - Izin Tidak Masuk -->
+                            <div class="form-section" id="izin-form">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="far fa-calendar me-2"></i>Tanggal Izin
+                                    </label>
+                                    <input type="date" class="form-control" id="izinDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-user-clock me-2"></i>Jenis Izin
+                                    </label>
+                                    <select class="form-select" id="izinType" required>
+                                        <option value="" disabled selected>Pilih jenis izin</option>
+                                        <option value="sakit">Izin Sakit</option>
+                                        <option value="keluarga">Izin Keluarga</option>
+                                        <option value="penting">Keperluan Penting</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-clock me-2"></i>Durasi Izin
+                                    </label>
+                                    <select class="form-select" id="izinDuration" required>
+                                        <option value="full">Full Day (1 Hari Penuh)</option>
+                                        <option value="half">Setengah Hari</option>
+                                        <option value="hours">Beberapa Jam</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Form Section - Perjalanan Dinas -->
+                            <div class="form-section" id="perdin-form">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-map-marked-alt me-2"></i>Tujuan Perjalanan
+                                    </label>
+                                    <input type="text" class="form-control" id="perdinDestination" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="far fa-calendar me-2"></i>Tanggal Perjalanan
+                                    </label>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <input type="date" class="form-control" id="perdinStartDate" required>
+                                            <small class="text-muted">Berangkat</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="date" class="form-control" id="perdinEndDate" required>
+                                            <small class="text-muted">Pulang</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-flex align-items-center">
+                                        <i class="fas fa-info-circle me-2"></i>Keperluan
+                                    </label>
+                                    <textarea class="form-control" id="perdinPurpose" rows="2" required></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Common Fields -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold d-flex align-items-center">
+                                    <i class="fas fa-align-left me-2"></i>Keterangan
+                                </label>
+                                <textarea class="form-control" id="submissionNote" rows="3" required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold d-flex align-items-center">
+                                    <i class="fas fa-paperclip me-2"></i>Lampiran
+                                </label>
+                                <input type="file" class="form-control" id="submissionAttachment">
+                                <small class="text-muted">Unggah dokumen pendukung (maks. 5MB)</small>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Kirim Pengajuan
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i>Batal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item" id="nav-home">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div>Beranda</div>
+            </a>
+            <a href="employees.html" class="nav-item" id="nav-employees">
+                <div class="nav-icon"><i class="fas fa-users"></i></div>
+                <div>Karyawan</div>
+            </a>
+            <a href="pengajuan.html" class="nav-item active" id="nav-submission">
+                <div class="nav-icon"><i class="fas fa-file-upload"></i></div>
+                <div>Pengajuan</div>
+            </a>
+            <a href="inbox.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-inbox"></i></div>
+                <div>Inbox</div>
+            </a>
+            <a href="account.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
+                <div>Akun</div>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set active nav based on current page
+            function setActiveNav() {
+                const currentPage = window.location.pathname.split('/').pop();
+                const pageToNavId = {
+                    'index.html': 'nav-home',
+                    'employees.html': 'nav-employees',
+                    'pengajuan.html': 'nav-submission'
+                };
+
+                const activeNavId = pageToNavId[currentPage] || 'nav-submission';
+                document.getElementById(activeNavId)?.classList.add('active');
+            }
+
+            setActiveNav();
+
+            // Handle nav clicks
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Set today's date as default for date inputs
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('input[type="date"]').forEach(input => {
+                input.value = today;
+            });
+
+            // Handle submission type change
+            const submissionType = document.getElementById('submissionType');
+            submissionType.addEventListener('change', function() {
+                // Hide all form sections
+                document.querySelectorAll('.form-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected form section
+                const selectedForm = document.getElementById(`${this.value}-form`);
+                if (selectedForm) {
+                    selectedForm.classList.add('active');
+                }
+            });
+
+            // Calculate leave days
+            const cutiStartDate = document.getElementById('cutiStartDate');
+            const cutiEndDate = document.getElementById('cutiEndDate');
+            const cutiDays = document.getElementById('cutiDays');
+            
+            function calculateLeaveDays() {
+                if (cutiStartDate.value && cutiEndDate.value) {
+                    const start = new Date(cutiStartDate.value);
+                    const end = new Date(cutiEndDate.value);
+                    const diffTime = Math.abs(end - start);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                    cutiDays.value = diffDays;
+                }
+            }
+            
+            cutiStartDate.addEventListener('change', calculateLeaveDays);
+            cutiEndDate.addEventListener('change', calculateLeaveDays);
+
+            // Form submission
+            const submissionForm = document.getElementById('submissionForm');
+            submissionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                const type = submissionType.value;
+                if (!type) {
+                    alert('Pilih jenis pengajuan terlebih dahulu');
+                    return;
+                }
+                
+                // Prepare submission data
+                const submissionData = {
+                    type: type,
+                    note: document.getElementById('submissionNote').value,
+                    attachment: document.getElementById('submissionAttachment').files[0]?.name
+                };
+                
+                // Add type-specific data
+                switch(type) {
+                    case 'cuti':
+                        submissionData.startDate = cutiStartDate.value;
+                        submissionData.endDate = cutiEndDate.value;
+                        submissionData.days = cutiDays.value;
+                        submissionData.leaveType = document.getElementById('cutiType').value;
+                        break;
+                        
+                    case 'reimbursement':
+                        submissionData.amount = document.getElementById('reimbursementAmount').value;
+                        submissionData.expenseType = document.getElementById('reimbursementType').value;
+                        submissionData.expenseDate = document.getElementById('reimbursementDate').value;
+                        break;
+                        
+                    case 'lembur':
+                        submissionData.date = document.getElementById('lemburDate').value;
+                        submissionData.startTime = document.getElementById('lemburStart').value;
+                        submissionData.endTime = document.getElementById('lemburEnd').value;
+                        submissionData.project = document.getElementById('lemburProject').value;
+                        break;
+                        
+                    case 'izin':
+                        submissionData.date = document.getElementById('izinDate').value;
+                        submissionData.leaveType = document.getElementById('izinType').value;
+                        submissionData.duration = document.getElementById('izinDuration').value;
+                        break;
+                        
+                    case 'perdin':
+                        submissionData.destination = document.getElementById('perdinDestination').value;
+                        submissionData.startDate = document.getElementById('perdinStartDate').value;
+                        submissionData.endDate = document.getElementById('perdinEndDate').value;
+                        submissionData.purpose = document.getElementById('perdinPurpose').value;
+                        break;
+                }
+                
+                // In real app, send data to server here
+                console.log('Data Pengajuan:', submissionData);
+                
+                // Show success message
+                alert('Pengajuan berhasil dikirim!');
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('newSubmissionModal'));
+                modal.hide();
+                
+                // Reset form
+                this.reset();
+                document.querySelectorAll('input[type="date"]').forEach(input => {
+                    input.value = today;
+                });
+                document.querySelectorAll('.form-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

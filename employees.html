@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta content="#5c24c0" name="theme-color" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Manajemen Karyawan</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #a78bfa;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --gray-light: #e2e8f0;
+            --gray: #94a3b8;
+            --dark: #1e293b;
+            --white: #ffffff;
+        }
+
+        body {
+            background-color: #f5f3ff;
+            color: var(--dark);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            background-color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-shadow: 0 0 40px rgba(109, 40, 217, 0.08);
+            padding: 0;
+            padding-bottom: 90px;
+        }
+
+        /* Header Section */
+        .header {
+            padding: 25px;
+            background: linear-gradient(160deg, var(--primary-dark), var(--primary));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            padding-bottom: 30px;
+            /* Ruang untuk overlap */
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+            z-index: -1;
+        }
+
+        .greeting {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--light), #e2e8f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* Employee Section Styles */
+        /* Employee Section Styles */
+        .employee-section {
+            background-color: var(--white);
+            margin: -20px 20px 25px;
+            /* Atas kanan bawah kiri */
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            z-index: 2;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-light);
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+        }
+
+        .employee-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(109, 40, 217, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .employee-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .employee-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: var(--light);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-light);
+        }
+
+        .employee-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(109, 40, 217, 0.1);
+        }
+
+        .employee-avatar {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .employee-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .employee-info {
+            flex-grow: 1;
+        }
+
+        .employee-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--dark);
+        }
+
+        .employee-position {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .employee-department .badge {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 4px 8px;
+        }
+
+        .employee-status .badge {
+            font-size: 11px;
+            padding: 5px 10px;
+            font-weight: 500;
+        }
+
+        /* Badge Color Variants */
+        .bg-primary-light {
+            background-color: rgba(109, 40, 217, 0.1);
+        }
+
+        .bg-warning-light {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .bg-danger-light {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .bg-info-light {
+            background-color: rgba(6, 182, 212, 0.1);
+        }
+
+        .text-warning {
+            color: var(--accent);
+        }
+
+        /* Search Box */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box .input-group-text {
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+            background-color: white;
+        }
+
+        .search-box .form-control {
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+            font-size: 14px;
+        }
+
+        .search-box .form-control:focus {
+            box-shadow: none;
+            border-color: #ced4da;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--white);
+            padding: 12px 0;
+            box-shadow: 0 -6px 20px rgba(109, 40, 217, 0.08);
+            z-index: 10;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--gray);
+            font-size: 9px;
+            width: 20%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 0;
+            border-radius: 10px;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .nav-item::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            background: #f5f3ff;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active::before {
+            opacity: 1;
+            top: -5px;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.15);
+            color: var(--primary);
+        }
+
+        /* Button Styles */
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* NAVBAR */
+        .nav-item {
+            text-decoration: none !important;
+            color: var(--gray);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+         /* Animasi Fade In yang lebih cepat */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px); /* Gerakan lebih pendek */
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Header Animation - lebih cepat */
+    .header {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    /* Employee Section Animation - lebih cepat */
+    .employee-section {
+        animation: fadeIn 0.4s 0.1s ease-out forwards;
+        opacity: 0;
+    }
+
+    /* Employee Items Animation - lebih cepat dengan staggered delay lebih pendek */
+    .employee-item {
+        animation: fadeIn 0.3s ease-out forwards;
+        opacity: 0;
+    }
+
+    /* Staggered Animation yang lebih rapat */
+    .employee-item:nth-child(1) { animation-delay: 0.15s; }
+    .employee-item:nth-child(2) { animation-delay: 0.2s; }
+    .employee-item:nth-child(3) { animation-delay: 0.25s; }
+    .employee-item:nth-child(4) { animation-delay: 0.3s; }
+    .employee-item:nth-child(5) { animation-delay: 0.35s; }
+
+    /* Search Box Animation - lebih cepat */
+    .search-box {
+        animation: fadeIn 0.4s 0.05s ease-out forwards;
+        opacity: 0;
+    }
+
+    /* Bottom Nav Animation - lebih cepat */
+    .bottom-nav {
+        animation: fadeIn 0.4s 0.15s ease-out forwards;
+        opacity: 0;
+    }
+
+    /* Efek hover yang lebih cepat */
+    .employee-item:hover, 
+    .employee-section:hover {
+        transition-duration: 0.2s;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header d-flex justify-content-between align-items-center">
+            <div class="header-content">
+                <div class="greeting">Profil Karyawan</div>
+                <h4 class="user-name">Balai Kekarantinaan Kesehatan Kelas 1 Tarakan</h4>
+            </div>
+            <div class="user-avatar mb-2">
+                <img alt="User Avatar" class="img-fluid" src="https://avatar.iran.liara.run/public/48">
+            </div>
+        </div>
+
+        <!-- Employee List Section -->
+        <div class="employee-section">
+            <div class="section-header">
+                <h3 class="section-title">Daftar Karyawan</h3>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Cari karyawan...">
+                </div>
+            </div>
+
+            <div class="employee-list">
+                <!-- Employee Item 1 -->
+                <div class="employee-item">
+                    <div class="employee-avatar">
+                        <img src="https://avatar.iran.liara.run/public/35" alt="Employee Avatar">
+                    </div>
+                    <div class="employee-info">
+                        <h5 class="employee-name">Ahmad Budiman</h5>
+                        <p class="employee-position">Frontend Developer</p>
+                        <div class="employee-department">
+                            <span class="badge bg-primary-light text-primary">IT Department</span>
+                        </div>
+                    </div>
+                    <div class="employee-status">
+                        <span class="badge bg-success bg-opacity-10 text-success">
+                            <i class="fas fa-circle small me-1"></i> Aktif
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Employee Item 2 -->
+                <div class="employee-item">
+                    <div class="employee-avatar">
+                        <img src="https://avatar.iran.liara.run/public/36" alt="Employee Avatar">
+                    </div>
+                    <div class="employee-info">
+                        <h5 class="employee-name">Siti Rahayu</h5>
+                        <p class="employee-position">HR Manager</p>
+                        <div class="employee-department">
+                            <span class="badge bg-warning-light text-warning">HR Department</span>
+                        </div>
+                    </div>
+                    <div class="employee-status">
+                        <span class="badge bg-success bg-opacity-10 text-success">
+                            <i class="fas fa-circle small me-1"></i> Aktif
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Employee Item 3 -->
+                <div class="employee-item">
+                    <div class="employee-avatar">
+                        <img src="https://avatar.iran.liara.run/public/37" alt="Employee Avatar">
+                    </div>
+                    <div class="employee-info">
+                        <h5 class="employee-name">Budi Santoso</h5>
+                        <p class="employee-position">Finance Staff</p>
+                        <div class="employee-department">
+                            <span class="badge bg-danger-light text-danger">Finance</span>
+                        </div>
+                    </div>
+                    <div class="employee-status">
+                        <span class="badge bg-secondary bg-opacity-10 text-secondary">
+                            <i class="fas fa-circle small me-1"></i> Cuti
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Employee Item 4 -->
+                <div class="employee-item">
+                    <div class="employee-avatar">
+                        <img src="https://avatar.iran.liara.run/public/38" alt="Employee Avatar">
+                    </div>
+                    <div class="employee-info">
+                        <h5 class="employee-name">Dewi Lestari</h5>
+                        <p class="employee-position">Backend Developer</p>
+                        <div class="employee-department">
+                            <span class="badge bg-primary-light text-primary">IT Department</span>
+                        </div>
+                    </div>
+                    <div class="employee-status">
+                        <span class="badge bg-success bg-opacity-10 text-success">
+                            <i class="fas fa-circle small me-1"></i> Aktif
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Employee Item 5 -->
+                <div class="employee-item">
+                    <div class="employee-avatar">
+                        <img src="https://avatar.iran.liara.run/public/39" alt="Employee Avatar">
+                    </div>
+                    <div class="employee-info">
+                        <h5 class="employee-name">Rudi Hermawan</h5>
+                        <p class="employee-position">Marketing Head</p>
+                        <div class="employee-department">
+                            <span class="badge bg-info-light text-info">Marketing</span>
+                        </div>
+                    </div>
+                    <div class="employee-status">
+                        <span class="badge bg-success bg-opacity-10 text-success">
+                            <i class="fas fa-circle small me-1"></i> Aktif
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item btn-scale" id="nav-home">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div>Beranda</div>
+            </a>
+            <a href="employees.html" class="nav-item active btn-scale" id="nav-employees">
+                <div class="nav-icon"><i class="fas fa-users"></i></div>
+                <div>Karyawan</div>
+            </a>
+            <a href="pengajuan.html" class="nav-item ">
+                <div class="nav-icon"><i class="fas fa-file-upload"></i></div>
+                <div>Pengajuan</div>
+            </a>
+            <a href="inbox.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-inbox"></i></div>
+                <div>Inbox</div>
+            </a>
+            <a href="account.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
+                <div>Akun</div>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navItems = document.querySelectorAll('.nav-item');
+
+            // Fungsi untuk menangani klik navigasi
+            function handleNavClick(e) {
+                // Hanya preventDefault jika itu adalah link placeholder (#)
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+
+                // Update active state
+                navItems.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+
+                // Jika bukan link placeholder, biarkan default behavior bekerja
+                if (this.getAttribute('href') !== '#') {
+                    return true;
+                }
+
+                // Untuk link placeholder, bisa tambahkan logika custom di sini
+                console.log('Menu ini belum diimplementasikan');
+            }
+
+            // Tambahkan event listener
+            navItems.forEach(item => {
+                item.addEventListener('click', handleNavClick);
+            });
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-box input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    const searchTerm = this.value.toLowerCase();
+                    const employees = document.querySelectorAll('.employee-item');
+
+                    employees.forEach(employee => {
+                        const name = employee.querySelector('.employee-name').textContent.toLowerCase();
+                        const position = employee.querySelector('.employee-position').textContent.toLowerCase();
+
+                        if (name.includes(searchTerm) || position.includes(searchTerm)) {
+                            employee.style.display = 'flex';
+                        } else {
+                            employee.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Set active nav based on current page
+            function setActiveNav() {
+                const currentPage = window.location.pathname.split('/').pop();
+                const pageToNavId = {
+                    'index.html': 'nav-home',
+                    'employees.html': 'nav-employees'
+                    // Tambahkan mapping lainnya sesuai kebutuhan
+                };
+
+                const activeNavId = pageToNavId[currentPage] || 'nav-employees';
+                document.getElementById(activeNavId)?.classList.add('active');
+            }
+
+            setActiveNav();
+        });
+    </script>
+</body>
+
+</html>

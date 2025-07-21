@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta content="#5c24c0" name="theme-color" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Inbox</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #a78bfa;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --gray-light: #e2e8f0;
+            --gray: #94a3b8;
+            --dark: #1e293b;
+            --white: #ffffff;
+        }
+
+        body {
+            background-color: #f5f3ff;
+            color: var(--dark);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            background-color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-shadow: 0 0 40px rgba(109, 40, 217, 0.08);
+            padding: 0;
+            padding-bottom: 90px;
+        }
+
+        /* Header Section */
+        .header {
+            padding: 25px;
+            background: linear-gradient(160deg, var(--primary-dark), var(--primary));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            padding-bottom: 30px;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+            z-index: -1;
+        }
+
+        .greeting {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--light), #e2e8f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* Inbox Section */
+        .inbox-section {
+            background-color: var(--white);
+            margin: -20px 20px 25px;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-light);
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+        }
+
+        .inbox-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(109, 40, 217, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .inbox-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 15px;
+        }
+
+        .inbox-tab {
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray);
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .inbox-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .inbox-tab:hover {
+            color: var(--primary-dark);
+        }
+
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-light);
+            text-decoration: none;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .message-item.unread {
+            background-color: rgba(109, 40, 217, 0.05);
+            border-left: 3px solid var(--primary);
+        }
+
+        .message-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(109, 40, 217, 0.1);
+            background-color: #f5f3ff;
+        }
+
+        .sender-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .message-content {
+            flex-grow: 1;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .sender-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .message-preview {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 5px;
+            display: -webkit-box;
+            /* -webkit-line-clamp: 2; */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .message-subject {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .message-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+
+        /* Chat Room Styles */
+        .chat-room {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--white);
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .chat-room.active {
+            transform: translateY(0);
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: linear-gradient(160deg, var(--primary-dark), var(--primary));
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .chat-back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-user-info {
+            flex-grow: 1;
+        }
+
+        .chat-user-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .chat-user-status {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: #f9f7ff;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .received {
+            align-self: flex-start;
+            background-color: var(--white);
+            border-bottom-left-radius: 5px;
+            color: var(--dark);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 10px;
+            margin-top: 5px;
+            text-align: right;
+            opacity: 0.7;
+        }
+
+        /* Modified Chat Input Area */
+        .chat-input-area {
+            padding: 15px;
+            background-color: var(--white);
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-input {
+            width: 100%;
+            border: 1px solid var(--gray-light);
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+            resize: none;
+            min-height: 40px;
+            max-height: 120px;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+        }
+
+        .send-btn {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:disabled {
+            background: var(--gray-light);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .attachment-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--white);
+            padding: 12px 0;
+            box-shadow: 0 -6px 20px rgba(109, 40, 217, 0.08);
+            z-index: 10;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--gray);
+            font-size: 9px;
+            width: 20%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 0;
+            border-radius: 10px;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .nav-item::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            background: #f5f3ff;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active::before {
+            opacity: 1;
+            top: -5px;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.15);
+            color: var(--primary);
+        }
+
+        /* Button Styles */
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* NAVBAR */
+        .nav-item {
+            text-decoration: none !important;
+            color: var(--gray);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        /* Animasi */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .inbox-section {
+            animation: fadeIn 0.4s 0.1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .message-item {
+            animation: fadeIn 0.3s ease-out forwards;
+            opacity: 0;
+        }
+
+        .message-item:nth-child(1) { animation-delay: 0.15s; }
+        .message-item:nth-child(2) { animation-delay: 0.2s; }
+        .message-item:nth-child(3) { animation-delay: 0.25s; }
+        .message-item:nth-child(4) { animation-delay: 0.3s; }
+        .message-item:nth-child(5) { animation-delay: 0.35s; }
+
+        .bottom-nav {
+            animation: fadeIn 0.4s 0.15s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Search Box */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box .input-group-text {
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+            background-color: white;
+        }
+
+        .search-box .form-control {
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+            font-size: 14px;
+        }
+
+        .search-box .form-control:focus {
+            box-shadow: none;
+            border-color: #ced4da;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header d-flex justify-content-between align-items-center">
+            <div class="header-content">
+                <div class="greeting">Kotak Masuk</div>
+                <h4 class="user-name">Pesan & Notifikasi</h4>
+            </div>
+            <div class="user-avatar mb-2">
+                <img alt="User Avatar" class="img-fluid" src="https://avatar.iran.liara.run/public/48">
+            </div>
+        </div>
+
+        <!-- Inbox Section -->
+        <div class="inbox-section">
+            <div class="section-header">
+                <h3 class="section-title">Pesan Terbaru</h3>
+                <button class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </div>
+
+            <div class="search-box">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Cari pesan...">
+                </div>
+            </div>
+
+            <div class="inbox-tabs">
+                <div class="inbox-tab active">Semua</div>
+                <div class="inbox-tab">Belum Dibaca</div>
+                <div class="inbox-tab">Prioritas</div>
+            </div>
+
+            <div class="message-list">
+                <!-- Message 1 -->
+                <a href="#" class="message-item unread" data-chat="ahmad-budiman">
+                    <img src="https://avatar.iran.liara.run/public/35" alt="Sender" class="sender-avatar">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <h5 class="sender-name">Ahmad Budiman</h5>
+                            <span class="message-time">10 menit lalu</span>
+                        </div>
+                        <p class="message-subject">Pengajuan Cuti Tahunan</p>
+                        <p class="message-preview">Mohon persetujuan untuk pengajuan cuti tahunan saya tanggal 15-20 Juli 2023...</p>
+                    </div>
+                    <div class="message-badge"></div>
+                </a>
+
+                <!-- Message 2 -->
+                <a href="#" class="message-item" data-chat="siti-rahayu">
+                    <img src="https://avatar.iran.liara.run/public/36" alt="Sender" class="sender-avatar">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <h5 class="sender-name">Siti Rahayu</h5>
+                            <span class="message-time">1 jam lalu</span>
+                        </div>
+                        <p class="message-subject">Laporan Bulanan HR</p>
+                        <p class="message-preview">Berikut saya lampirkan laporan bulanan departemen HR untuk bulan Juni 2023...</p>
+                    </div>
+                </a>
+
+                <!-- Message 3 -->
+                <a href="#" class="message-item unread" data-chat="budi-santoso">
+                    <img src="https://avatar.iran.liara.run/public/37" alt="Sender" class="sender-avatar">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <h5 class="sender-name">Budi Santoso</h5>
+                            <span class="message-time">3 jam lalu</span>
+                        </div>
+                        <p class="message-subject">Permintaan Dokumen</p>
+                        <p class="message-preview">Mohon bantuannya untuk pengiriman dokumen kontrak karyawan baru...</p>
+                    </div>
+                    <div class="message-badge"></div>
+                </a>
+
+                <!-- Message 4 -->
+                <a href="#" class="message-item" data-chat="dewi-lestari">
+                    <img src="https://avatar.iran.liara.run/public/38" alt="Sender" class="sender-avatar">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <h5 class="sender-name">Dewi Lestari</h5>
+                            <span class="message-time">Kemarin</span>
+                        </div>
+                        <p class="message-subject">Undangan Meeting</p>
+                        <p class="message-preview">Meeting rutin bulanan akan dilaksanakan hari Jumat pukul 10.00 WIB...</p>
+                    </div>
+                </a>
+
+                <!-- Message 5 -->
+                <a href="#" class="message-item" data-chat="rudi-hermawan">
+                    <img src="https://avatar.iran.liara.run/public/39" alt="Sender" class="sender-avatar">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <h5 class="sender-name">Rudi Hermawan</h5>
+                            <span class="message-time">2 hari lalu</span>
+                        </div>
+                        <p class="message-subject">Approval Budget</p>
+                        <p class="message-preview">Budget untuk event tahunan sudah saya review dan approve, silakan diproses...</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item btn-scale" id="nav-home">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div>Beranda</div>
+            </a>
+            <a href="employees.html" class="nav-item btn-scale" id="nav-employees">
+                <div class="nav-icon"><i class="fas fa-users"></i></div>
+                <div>Karyawan</div>
+            </a>
+            <a href="pengajuan.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-file-upload"></i></div>
+                <div>Pengajuan</div>
+            </a>
+            <a href="inbox.html" class="nav-item active">
+                <div class="nav-icon"><i class="fas fa-inbox"></i></div>
+                <div>Inbox</div>
+            </a>
+            <a href="account.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
+                <div>Akun</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Chat Room -->
+    <div class="chat-room" id="chat-room">
+        <div class="chat-header">
+            <button class="chat-back-btn" id="chat-back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <img src="https://avatar.iran.liara.run/public/35" alt="User" class="chat-avatar" id="chat-avatar">
+            <div class="chat-user-info">
+                <div class="chat-user-name" id="chat-user-name">Ahmad Budiman</div>
+                <div class="chat-user-status">Online</div>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="chat-input-area">
+            <button class="attachment-btn">
+                <i class="fas fa-paperclip"></i>
+            </button>
+            <div class="chat-input-container">
+                <textarea class="chat-input" id="chat-input" placeholder="Ketik pesan..." rows="1"></textarea>
+            </div>
+            <button class="send-btn" id="send-btn" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navItems = document.querySelectorAll('.nav-item');
+            const inboxTabs = document.querySelectorAll('.inbox-tab');
+            const messageItems = document.querySelectorAll('.message-item');
+            const chatRoom = document.getElementById('chat-room');
+            const chatBackBtn = document.getElementById('chat-back-btn');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const chatUserName = document.getElementById('chat-user-name');
+            const chatAvatar = document.getElementById('chat-avatar');
+
+            // Sample chat data
+            const chatData = {
+                'ahmad-budiman': {
+                    name: 'Ahmad Budiman',
+                    avatar: 'https://avatar.iran.liara.run/public/35',
+                    messages: [
+                        {
+                            text: 'Halo, mohon persetujuan untuk pengajuan cuti tahunan saya tanggal 15-20 Juli 2023.',
+                            time: '10:15',
+                            sent: false
+                        },
+                        {
+                            text: 'Saya butuh waktu untuk keluarga selama seminggu.',
+                            time: '10:16',
+                            sent: false
+                        },
+                        {
+                            text: 'Baik, saya akan proses pengajuan cuti Anda. Apakah sudah mengisi form cuti di sistem?',
+                            time: '10:20',
+                            sent: true
+                        }
+                    ]
+                },
+                'siti-rahayu': {
+                    name: 'Siti Rahayu',
+                    avatar: 'https://avatar.iran.liara.run/public/36',
+                    messages: [
+                        {
+                            text: 'Berikut saya lampirkan laporan bulanan departemen HR untuk bulan Juni 2023.',
+                            time: '09:30',
+                            sent: false
+                        },
+                        {
+                            text: 'Terima kasih, laporan sudah diterima. Ada beberapa poin yang perlu didiskusikan.',
+                            time: '09:45',
+                            sent: true
+                        }
+                    ]
+                },
+                'budi-santoso': {
+                    name: 'Budi Santoso',
+                    avatar: 'https://avatar.iran.liara.run/public/37',
+                    messages: [
+                        {
+                            text: 'Mohon bantuannya untuk pengiriman dokumen kontrak karyawan baru.',
+                            time: '08:15',
+                            sent: false
+                        }
+                    ]
+                },
+                'dewi-lestari': {
+                    name: 'Dewi Lestari',
+                    avatar: 'https://avatar.iran.liara.run/public/38',
+                    messages: [
+                        {
+                            text: 'Meeting rutin bulanan akan dilaksanakan hari Jumat pukul 10.00 WIB di ruang rapat lantai 3.',
+                            time: 'Kemarin, 14:30',
+                            sent: false
+                        },
+                        {
+                            text: 'Baik, saya akan hadir. Apakah ada agenda khusus yang perlu dipersiapkan?',
+                            time: 'Kemarin, 14:45',
+                            sent: true
+                        },
+                        {
+                            text: 'Ya, tolong bawa laporan progress proyek masing-masing.',
+                            time: 'Kemarin, 14:46',
+                            sent: false
+                        }
+                    ]
+                },
+                'rudi-hermawan': {
+                    name: 'Rudi Hermawan',
+                    avatar: 'https://avatar.iran.liara.run/public/39',
+                    messages: [
+                        {
+                            text: 'Budget untuk event tahunan sudah saya review dan approve, silakan diproses sesuai rencana.',
+                            time: '2 hari lalu, 16:20',
+                            sent: false
+                        },
+                        {
+                            text: 'Terima kasih, akan segera kami proses.',
+                            time: '2 hari lalu, 16:25',
+                            sent: true
+                        }
+                    ]
+                }
+            };
+
+            // Fungsi untuk menangani klik navigasi
+            function handleNavClick(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+
+                navItems.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+
+                if (this.getAttribute('href') !== '#') {
+                    return true;
+                }
+
+                console.log('Menu ini belum diimplementasikan');
+            }
+
+            // Fungsi untuk menangani klik tab inbox
+            function handleTabClick() {
+                inboxTabs.forEach(tab => tab.classList.remove('active'));
+                this.classList.add('active');
+                console.log('Tab diubah:', this.textContent);
+            }
+
+            // Fungsi untuk membuka chat room
+            function openChatRoom(chatId) {
+                const chat = chatData[chatId];
+                if (!chat) return;
+
+                // Update chat header
+                chatUserName.textContent = chat.name;
+                chatAvatar.src = chat.avatar;
+
+                // Clear previous messages
+                chatMessages.innerHTML = '';
+
+                // Add messages to chat
+                chat.messages.forEach(msg => {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message');
+                    messageElement.classList.add(msg.sent ? 'sent' : 'received');
+                    
+                    messageElement.innerHTML = `
+                        <div>${msg.text}</div>
+                        <div class="message-time">${msg.time}</div>
+                    `;
+                    
+                    chatMessages.appendChild(messageElement);
+                });
+
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Show chat room
+                chatRoom.classList.add('active');
+            }
+
+            // Fungsi untuk menutup chat room
+            function closeChatRoom() {
+                chatRoom.classList.remove('active');
+            }
+
+            // Fungsi untuk mengirim pesan
+            function sendMessage() {
+                const messageText = chatInput.value.trim();
+                if (!messageText) return;
+
+                const currentTime = new Date();
+                const hours = currentTime.getHours().toString().padStart(2, '0');
+                const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+                const timeString = `${hours}:${minutes}`;
+
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.classList.add('sent');
+                
+                messageElement.innerHTML = `
+                    <div>${messageText}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                chatMessages.appendChild(messageElement);
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+                sendBtn.disabled = true;
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Auto-resize textarea
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+                
+                // Enable/disable tombol kirim berdasarkan isi input
+                sendBtn.disabled = this.value.trim() === '';
+            });
+
+            // Mencegah pengiriman dengan enter
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                }
+            });
+
+            // Tambahkan event listener
+            navItems.forEach(item => {
+                item.addEventListener('click', handleNavClick);
+            });
+
+            inboxTabs.forEach(tab => {
+                tab.addEventListener('click', handleTabClick);
+            });
+
+            messageItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const chatId = this.getAttribute('data-chat');
+                    openChatRoom(chatId);
+                });
+            });
+
+            chatBackBtn.addEventListener('click', closeChatRoom);
+
+            sendBtn.addEventListener('click', sendMessage);
+
+            // Set active nav based on current page
+            function setActiveNav() {
+                const currentPage = window.location.pathname.split('/').pop();
+                const pageToNavId = {
+                    'index.html': 'nav-home',
+                    'employees.html': 'nav-employees',
+                    'inbox.html': 'nav-inbox',
+                    'account.html': 'nav-account'
+                };
+
+                const activeNavId = pageToNavId[currentPage] || 'nav-inbox';
+                document.getElementById(activeNavId)?.classList.add('active');
+            }
+
+            setActiveNav();
+        });
+    </script>
+</body>
+
+</html>

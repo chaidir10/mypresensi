@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta content="#5c24c0" name="theme-color" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Akun Saya</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #a78bfa;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --gray-light: #e2e8f0;
+            --gray: #94a3b8;
+            --dark: #1e293b;
+            --white: #ffffff;
+        }
+
+        body {
+            background-color: #f5f3ff;
+            color: var(--dark);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            background-color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-shadow: 0 0 40px rgba(109, 40, 217, 0.08);
+            padding: 0;
+            padding-bottom: 90px;
+        }
+
+        /* Header Section */
+        .header {
+            padding: 25px;
+            background: linear-gradient(160deg, var(--primary-dark), var(--primary));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            padding-bottom: 30px;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+            z-index: -1;
+        }
+
+        .greeting {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--light), #e2e8f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* Account Section */
+        .account-section {
+            background-color: var(--white);
+            margin: -20px 20px 25px;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-light);
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.15);
+        }
+
+        .account-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(109, 40, 217, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            box-shadow: 0 6px 15px rgba(109, 40, 217, 0.2);
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .profile-position {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-light);
+            text-decoration: none;
+            color: var(--dark);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(109, 40, 217, 0.1);
+            background-color: #f5f3ff;
+            color: var(--primary);
+        }
+
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: rgba(109, 40, 217, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        .menu-content {
+            flex-grow: 1;
+        }
+
+        .menu-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .menu-desc {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .menu-arrow {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--white);
+            padding: 12px 0;
+            box-shadow: 0 -6px 20px rgba(109, 40, 217, 0.08);
+            z-index: 10;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--gray);
+            font-size: 9px;
+            width: 20%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 0;
+            border-radius: 10px;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .nav-item::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            background: #f5f3ff;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active::before {
+            opacity: 1;
+            top: -5px;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.15);
+            color: var(--primary);
+        }
+
+        /* Button Styles */
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* NAVBAR */
+        .nav-item {
+            text-decoration: none !important;
+            color: var(--gray);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        /* Animasi */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .account-section {
+            animation: fadeIn 0.4s 0.1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .profile-card {
+            animation: fadeIn 0.4s 0.15s ease-out forwards;
+            opacity: 0;
+        }
+
+        .menu-item {
+            animation: fadeIn 0.3s ease-out forwards;
+            opacity: 0;
+        }
+
+        .menu-item:nth-child(1) { animation-delay: 0.2s; }
+        .menu-item:nth-child(2) { animation-delay: 0.25s; }
+        .menu-item:nth-child(3) { animation-delay: 0.3s; }
+        .menu-item:nth-child(4) { animation-delay: 0.35s; }
+        .menu-item:nth-child(5) { animation-delay: 0.4s; }
+        .menu-item:nth-child(6) { animation-delay: 0.45s; }
+
+        .bottom-nav {
+            animation: fadeIn 0.4s 0.15s ease-out forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header d-flex justify-content-between align-items-center">
+            <div class="header-content">
+                <div class="greeting">Akun Saya</div>
+                <h4 class="user-name">Pengaturan Profil</h4>
+            </div>
+            <div class="user-avatar mb-2">
+                <img alt="User Avatar" class="img-fluid" src="https://avatar.iran.liara.run/public/48">
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="account-section">
+            <div class="profile-card">
+                <img src="https://avatar.iran.liara.run/public/48" alt="Profile" class="profile-avatar">
+                <h3 class="profile-name">Chaidirrahman, S.Kom.</h3>
+                <p class="profile-position">Pranata Komputer Ahli Pertama</p>
+                <button class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-pencil-alt me-1"></i> Edit Profil
+                </button>
+            </div>
+
+            <div class="menu-list">
+                <!-- Menu Item 1 -->
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">Informasi Pribadi</div>
+                        <div class="menu-desc">Kelola data diri dan kontak</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <!-- Menu Item 2 -->
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">Keamanan Akun</div>
+                        <div class="menu-desc">Ubah password dan verifikasi</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <!-- Menu Item 3 -->
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">Notifikasi</div>
+                        <div class="menu-desc">Pengaturan pemberitahuan</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <!-- Menu Item 4 -->
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">Tema Aplikasi</div>
+                        <div class="menu-desc">Light mode / Dark mode</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <!-- Menu Item 5 -->
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">Bantuan & Dukungan</div>
+                        <div class="menu-desc">Pusat bantuan dan FAQ</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <!-- Menu Item 6 -->
+                <a href="#" class="menu-item text-danger">
+                    <div class="menu-icon" style="background-color: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">Keluar</div>
+                        <div class="menu-desc">Logout dari aplikasi</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item btn-scale" id="nav-home">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div>Beranda</div>
+            </a>
+            <a href="employees.html" class="nav-item btn-scale" id="nav-employees">
+                <div class="nav-icon"><i class="fas fa-users"></i></div>
+                <div>Karyawan</div>
+            </a>
+            <a href="pengajuan.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-file-upload"></i></div>
+                <div>Pengajuan</div>
+            </a>
+            <a href="inbox.html" class="nav-item">
+                <div class="nav-icon"><i class="fas fa-inbox"></i></div>
+                <div>Inbox</div>
+            </a>
+            <a href="account.html" class="nav-item active">
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
+                <div>Akun</div>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navItems = document.querySelectorAll('.nav-item');
+
+            // Fungsi untuk menangani klik navigasi
+            function handleNavClick(e) {
+                // Hanya preventDefault jika itu adalah link placeholder (#)
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+
+                // Update active state
+                navItems.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+
+                // Jika bukan link placeholder, biarkan default behavior bekerja
+                if (this.getAttribute('href') !== '#') {
+                    return true;
+                }
+
+                // Untuk link placeholder, bisa tambahkan logika custom di sini
+                console.log('Menu ini belum diimplementasikan');
+            }
+
+            // Tambahkan event listener
+            navItems.forEach(item => {
+                item.addEventListener('click', handleNavClick);
+            });
+
+            // Set active nav based on current page
+            function setActiveNav() {
+                const currentPage = window.location.pathname.split('/').pop();
+                const pageToNavId = {
+                    'index.html': 'nav-home',
+                    'employees.html': 'nav-employees',
+                    'account.html': 'nav-account'
+                };
+
+                const activeNavId = pageToNavId[currentPage] || 'nav-account';
+                document.getElementById(activeNavId)?.classList.add('active');
+            }
+
+            setActiveNav();
+        });
+    </script>
+</body>
+
+</html>
